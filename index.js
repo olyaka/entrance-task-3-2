@@ -82,6 +82,18 @@ function calcDayRates(rates) {
   return dayRates;
 }
 
+function calcUsageForHours(start, end, duration, dayrates, usage) {
+  for (var i = start; i <= end - duration + 1; i++) {
+    var k = 0;
+    var sum = 0;
+    while (k < duration) {
+      sum += dayrates[i + k];
+      k++;
+    }
+    usage.push(sum);
+  }
+}
+
 function findMinHour(dayrates, consumedEnergy, start, end, item, schedule) {
   var duration = item.duration;
   var power = item.power;
@@ -93,18 +105,10 @@ function findMinHour(dayrates, consumedEnergy, start, end, item, schedule) {
       consumedEnergy[start] + power > MAX_POWER &&
       start + duration <= end
     ) {
-      debugger;
       start += 1;
     }
-    for (var i = start; i <= end - duration + 1; i++) {
-      var k = 0;
-      var sum = 0;
-      while (k < duration) {
-        sum += dayrates[i + k];
-        k++;
-      }
-      usage.push(sum);
-    }
+
+    calcUsageForHours(start, end, duration, dayrates, usage);
 
     var index = start + usage.indexOf(Math.min.apply(null, usage));
 
@@ -112,7 +116,6 @@ function findMinHour(dayrates, consumedEnergy, start, end, item, schedule) {
       consumedEnergy[i] += power;
       schedule[i].push(item.id);
     }
-
     return index;
   } else {
     var joinedDayRates = [];
@@ -177,6 +180,18 @@ function calcRates(input) {
     consumedEnergy[i] = 0;
   }
 
+  devices.sort(function(a, b) {
+    if (a.power > b.power) {
+      return -1;
+    }
+    if (a.power < b.power) {
+      return 1;
+    }
+    return 0;
+  });
+
+  console.log(devices);
+
   devices.forEach(item => {
     if (item.duration === 24) {
       Object.keys(schedule).forEach(function(key, index) {
@@ -215,7 +230,17 @@ function calcRates(input) {
     }
   });
 
-  console.log(consumedEnergy);
+  Object.keys(schedule).forEach(function(item) {
+    schedule[item].sort();
+  });
+
+  var devicesEnergy =  {}
+
+  for(var i = 0; i < schedule.length; i++) {
+    schedule[i].forEach(function(item) {
+      devicesEnergy[item] += devicesEnergy[item] + input[]
+    });
+  }
 
   return 1;
 }
