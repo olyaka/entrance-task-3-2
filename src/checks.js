@@ -1,6 +1,6 @@
 var assert = require("assert");
 
-var getRates = require("./index.js");
+var findTimeRange = require("./findTimeRange.js");
 
 var test = {
   devices: [
@@ -67,8 +67,6 @@ var test = {
   maxPower: 2100
 };
 
-assert.equal(getRates(test), 1, "При сложении 12 и 33 получится 45");
-
-console.log(dayRates);
+assert.equal(findTimeRange(test), 1, "При сложении 12 и 33 получится 45");
 
 console.info("OK!");

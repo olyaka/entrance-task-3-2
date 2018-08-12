@@ -60,7 +60,7 @@ var input = {
       value: 1.79
     }
   ],
-  maxPower: 1100
+  maxPower: 2100
 };
 
 import { getSchedule } from './getSchedule';

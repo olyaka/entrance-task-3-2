@@ -30,3 +30,16 @@ export function addToSchedule(item, schedule, consumedEnergy, index, endIndex) {
         schedule[i].push(item.id);
       }
 }
+
+export function checkAvailableTimeSlot(item, consumedEnergy, start, end, MAX_POWER) {
+  while (
+    consumedEnergy[start] + item.power > MAX_POWER &&
+    start + item.duration <= end
+  ) {
+    start += 1;
+  }
+
+  if (start + item.duration === end + 1) {
+    throw 'Oops! It seems that ' + item.name.toLowerCase() + ' requires too much power :(';
+  } 
+}
